@@ -1,7 +1,8 @@
 export const PopupWithForm = (props) => {
 	return(
-		<div className={`popup ${props.isOpened} `} id={props.name}>
+		<div className={props.isOpen ? 'popup popup_opened' : 'popup'} id={props.name}>
     <div className="popup__container">
+      {/* <button className="popup__close-button" title='Закрыть попап' onClick={() => props.setIsOpen(false)}></button> */}
       <button className="popup__close-button" title='Закрыть попап'></button>
       <form className="form form_delete-item" name={props.name} noValidate>
         {props.children}
