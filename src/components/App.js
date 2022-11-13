@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Main } from "./Main";
-import { PopupPictures } from "./PopupPictures";
+import { ImagePopup } from "./ImagePopup";
 import { PopupWithForm } from "./PopupWithForm";
 
 export const App = () => {
@@ -107,7 +107,7 @@ export const App = () => {
           </label>
 
         </PopupWithForm>
-        <PopupPictures card={selectedCard} onClose={closeAllPopups} />
+        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
 
       {/* вынесли popup__container_delitem в отдельный div */}
