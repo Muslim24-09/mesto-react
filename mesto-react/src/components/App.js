@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { Main } from "./Main";
+import { PopupPictures } from "./PopupPictures";
 import { PopupWithForm } from "./PopupWithForm";
 
 export const App = () => {
@@ -11,12 +12,14 @@ export const App = () => {
   // const [closeAllPopups, setCloseAllPopups] = useState(true)
   const [popupSelector, setPopupSelector] = useState('')
   const [btnName, setBtnName] = useState('')
+  const [selectedCard, setSelectedCard] = useState()
 
   const documentListener = (e) => {
     if (e.target.classList.contains('popup__close-button') || e.target.classList.contains('popup_opened') || e.key === 'Escape') {
       setIsEditAvatarPopupOpen(false)
       setIsEditProfilePopupOpen(false)
       setIsAddPlacePopupOpen(false)
+
       // setCloseAllPopups(true)
     }
   }
@@ -35,15 +38,21 @@ export const App = () => {
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true)
     // setCloseAllPopups(false)
-
   }
 
-
+  const handleCardClick = (card) => {
+    setSelectedCard(card)
+  }
   return (
     <div className="page">
       <div className="page__container" onClick={documentListener} onKeyDown={documentListener}>
         <Header />
-        <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick} />
+        <Main  
+        onEditProfile={handleEditProfileClick} 
+        onAddPlace={handleAddPlaceClick} 
+        onEditAvatar={handleEditAvatarClick}
+        onCardClick={handleCardClick}
+         />
         <Footer />
         <PopupWithForm 
         name={popupSelector} 
@@ -51,6 +60,7 @@ export const App = () => {
         setIsOpen={setIsEditProfilePopupOpen}
         // onClose={closeAllPopups}
         // setOnClose={setCloseAllPopups}
+
         btnName={btnName}  >
           <h2 className="popup__title">Редактировать профиль</h2>
           <label className="form__field">
@@ -87,6 +97,7 @@ export const App = () => {
           </label>
 
         </PopupWithForm>
+        <PopupPictures card={selectedCard} />
       </div>
 
       {/* <div className="popup" id="popup-profile">
@@ -144,7 +155,7 @@ export const App = () => {
       </div> */}
 
 
-      <template className="element__template">
+      {/* <template className="element__template">
         <div className="element">
           <img className="element__image" alt="" />
           <div className="element__container">
@@ -156,7 +167,7 @@ export const App = () => {
           </div>
           <button type="button" className="element__delete-button"></button>
         </div>
-      </template>
+      </template> */}
     </div>
   );
 }

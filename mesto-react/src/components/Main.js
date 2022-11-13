@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {api} from '../utils/Api.js';
+import { api } from '../utils/Api.js';
+import { Card } from "./Card.js";
 
-export const Main = ({onEditProfile, onAddPlace, onEditAvatar}) => {
+export const Main = ({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) => {
 	// userName, userDescription и userAvatar
 	const [userName, setUserName] = useState('');
 	const [userDescription, setUserDescription] = useState('')
 	const [userAvatar, setUserAvatar] = useState('')
-
+	const [cards, setCards] = useState([])
 	useEffect(() => {
-		// setUserDescription(api.getUserInfo)
-		 api.getUserInfo().then(res => {
+		api.getUserInfo().then(res => {
 			const userInfo = res
 
 
@@ -17,14 +17,19 @@ export const Main = ({onEditProfile, onAddPlace, onEditAvatar}) => {
 			setUserDescription(userInfo.about)
 			setUserAvatar(userInfo.avatar)
 
+			api.getAddingPictures().then(res => {
+				const getedCards = res
+				setCards(getedCards)
+			})
+
 		})
-		
-		
+
+
 	}, [])
 	return (
 		<main className="content">
 			<section className="profile">
-      
+
 				<button type='button' className="profile__avatar-btn" title='Редактировать аватар' onClick={onEditAvatar}>
 					<img className="profile__avatar" src={userAvatar} alt="аватар профиля" />
 				</button>
@@ -39,9 +44,13 @@ export const Main = ({onEditProfile, onAddPlace, onEditAvatar}) => {
 			</section>
 
 			<section className="elements elements-wrapper">
-
+				{
+					cards.map(card => (
+						<Card card={card} key={card._id} onCardClick={onCardClick} />
+					))
+				}
 			</section>
-			
+
 		</main>
 	)
 }
