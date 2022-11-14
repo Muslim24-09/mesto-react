@@ -34,7 +34,6 @@ export const Main = ({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) =
 				</div>
 				<button type="button" className="profile__add-button" title='Добавить новую карточку' onClick={onAddPlace}></button>
 			</section>
-
 			<section className="elements elements-wrapper">
 				{
 					cards.map(card => (

@@ -9,8 +9,6 @@ export const App = () => {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
-  const [popupSelector, setPopupSelector] = useState('')
-  const [btnName, setBtnName] = useState('')
   const [selectedCard, setSelectedCard] = useState({})
   
   const closeAllPopups = () => {  
@@ -30,19 +28,15 @@ export const App = () => {
   };
 
   const handleEditProfileClick = () => {
-    setPopupSelector('popup-profile')
     setIsEditProfilePopupOpen(true)
-    setBtnName('Сохранить')
   }
 
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true)
-    setBtnName('Создать')
   }
 
   const handleCardClick = (card) => {
-    setSelectedCard(card)
-    setBtnName('Создать')
+    setSelectedCard(card) 
   }
 
   return (
@@ -57,18 +51,16 @@ export const App = () => {
         />
         <Footer />
         <PopupWithForm
-          name={popupSelector}
+          name={'popup-profile'}
           isOpen={isEditProfilePopupOpen}
-          setIsOpen={setIsEditProfilePopupOpen}
           onClose={closeAllPopups}
-          btnName={btnName}  >
-          <h2 className="popup__title">Редактировать профиль</h2>
+          btnName={'Сохранить'}
+          title={'Редактировать профиль'}  >         
           <label className="form__field">
             <input type="text" name="name" id='username' required placeholder="Имя"
               className="form__input form__input_type_name" minLength="2" maxLength="40" noValidate />
             <span className="form__error form__input-username-error"></span>
           </label>
-
           <label className="form__field">
             <input type="text" id='about' name="about" required placeholder="Деятельность"
               className="form__input form__input_type_about" minLength="2" maxLength="200" noValidate />
@@ -76,12 +68,11 @@ export const App = () => {
           </label>
         </PopupWithForm>
         <PopupWithForm
-          name={popupSelector}
+          name={'popup-change-avatar'}
           isOpen={isEditAvatarPopupOpen}
-          setIsOpen={setIsEditAvatarPopupOpen}
           onClose={closeAllPopups}
-          btnName={btnName}  >
-          <h3 className="popup__title">Изменить аватар</h3>
+          btnName={'Сохранить'}
+          title={'Изменить аватар'}   >
           <label className="form__field">
             <input type="url" name="avatar" id='avatar' required placeholder="Ссылка на аватар"
               className="form__input form__input_type_link" />
@@ -89,12 +80,11 @@ export const App = () => {
           </label>
         </PopupWithForm>
         <PopupWithForm
-          name={popupSelector}
+          name={'popup-action'}
           isOpen={isAddPlacePopupOpen}
-          setIsOpen={setIsAddPlacePopupOpen}
-          btnName={btnName}
-          onClose={closeAllPopups}  >
-          <h2 className="popup__title">Новое место</h2>
+          btnName={'Создать'}
+          onClose={closeAllPopups} 
+          title={'Новое место'}  >
           <label className="form__field">
             <input type="text" name="name" id='name' required placeholder="Название"
               className="form__input form__input_type_title" minLength="2" maxLength="30" />
@@ -105,7 +95,6 @@ export const App = () => {
               className="form__input form__input_type_link" />
             <span className="form__error form__input-link-error"></span>
           </label>
-
         </PopupWithForm>
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </div>
