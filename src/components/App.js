@@ -83,10 +83,8 @@ export const App = () => {
 
   const handleAddPlaceSubmit = (card) => {
     api.addItem(card).then(res => setCards([res, ...cards]))
-    console.log(card.name);
     card.name = ''
     closeAllPopups()
-    console.log(card.name);
   }
 
   return (
