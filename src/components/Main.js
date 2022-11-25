@@ -1,46 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { api } from '../utils/api.js';
+import React, { useContext } from "react";
 import { Card } from "./Card.js";
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
 
-export const Main = ({ onEditProfile, onAddPlace, onEditAvatar, onCardClick }) => {
-	const [userName, setUserName] = useState('');
-	const [userDescription, setUserDescription] = useState('')
-	const [userAvatar, setUserAvatar] = useState('')
-	const [cards, setCards] = useState([])
-	useEffect(() => {
-		api.getUserInfo().then(res => {
-			const userInfo = res
-			setUserName(userInfo.name)
-			setUserDescription(userInfo.about)
-			setUserAvatar(userInfo.avatar)
-		})
 
-		api.getAddingPictures().then(res => {
-			const getedCards = res
-			setCards(getedCards)
-		})
-	}, [])
+export const Main = ({ onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards, onCardLike, onCardDelete}) => {
 
+	// подписка на контекст
+	const user = useContext(CurrentUserContext)
 	return (
-		<main className="content">
-			<section className="profile">
-				<button type='button' className="profile__avatar-btn" title='Редактировать аватар' onClick={onEditAvatar}>
-					<img className="profile__avatar" src={userAvatar} alt="аватар профиля" />
-				</button>
-				<div className="profile__info">
-					<h1 className="profile__name">{userName}</h1>
-					<button type="button" className="profile__edit-button" title='Редактировать профиль' onClick={onEditProfile}></button>
-					<p className="profile__about">{userDescription}</p>
-				</div>
-				<button type="button" className="profile__add-button" title='Добавить новую карточку' onClick={onAddPlace}></button>
-			</section>
-			<section className="elements elements-wrapper">
-				{
-					cards.map(card => (
-						<Card card={card} key={card._id} onCardClick={onCardClick} />
-					))
-				}
-			</section>
-		</main>
+			<main className="content">
+				<section className="profile">
+					<button type='button' className="profile__avatar-btn" title='Редактировать аватар' onClick={onEditAvatar}>
+						<img className="profile__avatar" src={user.avatar} alt="аватар профиля" />
+					</button>
+					<div className="profile__info">
+						<h1 className="profile__name">{user.name}</h1>
+						<button type="button" className="profile__edit-button" title='Редактировать профиль' onClick={onEditProfile}></button>
+						<p className="profile__about">{user.about}</p>
+					</div>
+					<button type="button" className="profile__add-button" title='Добавить новую карточку' onClick={onAddPlace}></button>
+				</section>
+				<section className="elements elements-wrapper">
+					{
+						cards.map(card => (
+							<Card card={card} key={card._id} onCardClick={onCardClick} onCardLike={onCardLike} onCardDelete={onCardDelete} />
+						))
+					}
+				</section>
+			</main>
 	)
 }

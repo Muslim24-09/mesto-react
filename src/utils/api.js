@@ -23,7 +23,6 @@ class Api {
   }
 
   getAddingPictures() {
-
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._options
     })
@@ -50,20 +49,20 @@ class Api {
       .then(res => this._checkResponse(res))
   }
 
-  likeItem(itemId) {
-    return fetch(`${this._baseUrl}/cards/${itemId}/likes`, {
-      method: 'PUT',
-      headers: this._options
-    })
-      .then(res => this._checkResponse(res));
-  }
-
-  dislikeItem(itemId) {
-    return fetch(`${this._baseUrl}/cards/${itemId}/likes`, {
-      method: 'DELETE',
-      headers: this._options
-    })
-      .then(res => this._checkResponse(res));
+  changeLikeCardStatus(itemId, isLiked) {
+    if (!isLiked) {
+      return fetch(`${this._baseUrl}/cards/${itemId}/likes`, {
+        method: 'DELETE',
+        headers: this._options
+      })
+        .then(res => this._checkResponse(res));
+    } else {
+      return fetch(`${this._baseUrl}/cards/${itemId}/likes`, {
+        method: 'PUT',
+        headers: this._options
+      })
+        .then(res => this._checkResponse(res));
+    }
   }
 
   getUserInfo() {
