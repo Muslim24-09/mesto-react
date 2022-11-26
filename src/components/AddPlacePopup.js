@@ -19,6 +19,13 @@ export const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
 		setValid(false)
 	}
 
+	const handleClose = () => {
+		setName('')
+		setLink('')
+		setValid(false)
+		onClose()
+	}
+
 	const handleInput = (e) => {
 		if (e.target.name === 'name') {
 			if (!e.target.validity.valid) {
@@ -27,7 +34,6 @@ export const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
 			} else {
 				setErrorMessageName('')
 			}
-
 		} else if (e.target.name === 'link') {
 			if (!e.target.validity.valid) {
 				setValid(false)
@@ -35,21 +41,21 @@ export const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
 			} else {
 				setErrorMessageLink('')
 			}
-		}	else if(!name || !link) {
+		} else if (!name || !link) {
 			setValid(false)
 		} 
-
-		if (name && link && e.target.validity.valid) {
+		
+		if (e.target.closest('form').checkValidity()) {
 			setValid(true)
 		}
-
 	}
+
 	return (
 		<PopupWithForm
 			name={'popup-action'}
 			isOpen={isOpen}
 			btnName={'Создать'}
-			onClose={onClose}
+			onClose={handleClose}
 			title={'Новое место'}
 			onSubmit={handleSubmit}
 			valid={valid}
@@ -67,3 +73,4 @@ export const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
 		</PopupWithForm>
 	)
 }
+

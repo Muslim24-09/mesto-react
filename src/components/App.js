@@ -8,22 +8,22 @@ import { api } from "../utils/api";
 import { EditProfilePopup } from "./EditProfilePopup";
 import { EditAvatarPopup } from "./EditAvatarPopup";
 import { AddPlacePopup } from "./AddPlacePopup";
+import { PopupDeleteCard } from "./PopupDeleteCard";
 
 
 export const App = () => {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false)
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
+  const [isPopupDeleteCardOpen, setIsPopupDeleteCardOpen] = useState(false)
   const [selectedCard, setSelectedCard] = useState({})
   const [currentUser, setCurrentUser] = useState({})
   const [cards, setCards] = useState([])
-
-
+  const [itemToDelete, setItemToDelete] = useState({})
 
   useEffect(() => {
     api.getAddingPictures().then(res => setCards(res))
   }, [])
-
 
   useEffect(() => {
     api.getUserInfo().then(res => setCurrentUser(res))
@@ -33,6 +33,7 @@ export const App = () => {
     setIsEditAvatarPopupOpen(false)
     setIsEditProfilePopupOpen(false)
     setIsAddPlacePopupOpen(false)
+    setIsPopupDeleteCardOpen(false)
     setSelectedCard({})
   }
 
@@ -77,14 +78,20 @@ export const App = () => {
     });
   }
 
-  const handleCardDelete = (card) => {
-    api.removeItem(card._id).then(() => setCards(cards.filter((item) => item._id !== card._id)))
-  }
-
   const handleAddPlaceSubmit = (card) => {
     api.addItem(card).then(res => setCards([res, ...cards]))
     card.name = ''
     closeAllPopups()
+  }
+
+  const handleCardDelete = () => {
+    api.removeItem(itemToDelete._id).then(() => setCards(cards.filter((item) => item._id !== itemToDelete._id)))
+    closeAllPopups()
+  }
+
+  const handlePopupSubmitOpen = (card) => {
+    setItemToDelete(card)
+    setIsPopupDeleteCardOpen(true)
   }
 
   return (
@@ -99,29 +106,20 @@ export const App = () => {
             onCardClick={handleCardClick}
             cards={cards}
             onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
+            onDeleteCard={handlePopupSubmitOpen}
           />
           <Footer />
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
           <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-          <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+          <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
           <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <PopupDeleteCard
+            isOpen={isPopupDeleteCardOpen}
+            onClose={closeAllPopups}
+            onDeleteCard={handleCardDelete}
+            cardToDelete={itemToDelete} />
         </div>
-
-        {/* вынесли popup__container_delitem в отдельный div */}
-        {/* <div className="popup" id="popup-delItem">
-        <div className="popup__container">
-          <div className="popup__container_delitem">
-            <button className="popup__close-button" title='Закрыть попап'></button>
-            <form className="form form_delete-item" name='deleteForm' noValidate>
-              <h3 className="popup__title">Вы уверены?</h3>
-              <button type="submit" className="form__save-button form__save-button_delitem" title='Удалить карточку'>Да</button>
-            </form>
-          </div>
-        </div>
-      </div> */}
       </div>
-
     </CurrentUserContext.Provider>
   );
 }

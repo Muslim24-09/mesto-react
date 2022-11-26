@@ -6,7 +6,7 @@ export const EditAvatarPopup = ({ onClose, isOpen, onUpdateAvatar }) => {
 	const [errorMessageAvatar, setErrorMessageAvatar] = useState('')
 	const avatarUrl = useRef()
 
-	const  handleSubmit = (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault();
 		onUpdateAvatar({
 			avatar: avatarUrl.current.value,
@@ -14,21 +14,29 @@ export const EditAvatarPopup = ({ onClose, isOpen, onUpdateAvatar }) => {
 		avatarUrl.current.value = '';
 		setValid(false)
 	}
+	const handleClose = () => {
+		avatarUrl.current.value = '';
+		setValid(false)
+		onClose()
+	}
+
 
 	const handleInput = (e) => {
 		if (!e.target.validity.valid || avatarUrl.current.value === '') {
 			setValid(false)
 			setErrorMessageAvatar(e.target.validationMessage)
 		} else {
-			setValid(true)
 			setErrorMessageAvatar('')
+		}
+		if (e.target.closest('form').checkValidity()) {
+			setValid(true)
 		}
 	}
 	return (
 		<PopupWithForm
 			name={'popup-change-avatar'}
 			isOpen={isOpen}
-			onClose={onClose}
+			onClose={handleClose}
 			onSubmit={handleSubmit}
 			btnName={'Сохранить'}
 			valid={valid}

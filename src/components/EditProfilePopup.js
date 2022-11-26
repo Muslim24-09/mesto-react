@@ -29,6 +29,13 @@ const handleSubmit = (e) => {
 	})
 }
 
+const handleClose = () => {
+  setName(currentUser.name);
+  setDescription(currentUser.about)
+	setValid(false)
+	onClose()
+}
+
 const handleInput = (e) => {
 	if (e.target.name === 'name') {
 		if (!e.target.validity.valid) {
@@ -49,7 +56,7 @@ const handleInput = (e) => {
 		setValid(false)
 	} 
 
-	if (name && description && e.target.validity.valid) {
+	if (e.target.closest('form').checkValidity()) {
 		setValid(true)
 	}
 }
@@ -59,7 +66,7 @@ const handleInput = (e) => {
 			name={'popup-profile'}
 			valid={valid}
 			isOpen={isOpen}
-			onClose={onClose}
+			onClose={handleClose}
 			btnName={'Сохранить'}
 			onSubmit={handleSubmit}
 			title={'Редактировать профиль'}  >
