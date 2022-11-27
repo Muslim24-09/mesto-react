@@ -16,10 +16,9 @@ const currentUser = useContext(CurrentUserContext);
 // После загрузки текущего пользователя из API
 // его данные будут использованы в управляемых компонентах.
 useEffect(() => {
-	
   setName(currentUser.name);
   setDescription(currentUser.about);
-}, [currentUser]);
+}, [currentUser, isOpen]);
 
 const handleSubmit = (e) => {
 	e.preventDefault();
@@ -33,6 +32,8 @@ const handleClose = () => {
   setName(currentUser.name);
   setDescription(currentUser.about)
 	setValid(false)
+	setErrorMessageProfileName('')
+	setErrorMessageProfileAbout('')
 	onClose()
 }
 

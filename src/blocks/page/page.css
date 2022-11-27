@@ -2,6 +2,6 @@
   background: #000;
   font-family: 'Inter', 'Arial', sans-serif;
   text-rendering: optimizeLegibility;
-  margin-left: calc(100vw - 100%);
+  /* margin-left: calc(98vw - 100%); */
   margin-right: 0;
 }

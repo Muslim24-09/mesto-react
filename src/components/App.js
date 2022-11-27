@@ -22,11 +22,15 @@ export const App = () => {
   const [itemToDelete, setItemToDelete] = useState({})
 
   useEffect(() => {
-    api.getAddingPictures().then(res => setCards(res))
+    api.getAddingPictures()
+      .then(res => setCards(res))
+      .catch((err) => console.log(err))
   }, [])
 
   useEffect(() => {
-    api.getUserInfo().then(res => setCurrentUser(res))
+    api.getUserInfo()
+      .then(res => setCurrentUser(res))
+      .catch((err) => console.log(err))
   }, [])
 
   const closeAllPopups = () => {
@@ -59,13 +63,22 @@ export const App = () => {
   }
 
   const handleUpdateUser = (user) => {
-    api.updateUserInfo(user).then(res => setCurrentUser(res))
-    closeAllPopups()
+    api.updateUserInfo(user)
+      .then(res => {
+        setCurrentUser(res)
+        closeAllPopups()
+      })
+      .catch((err) => console.log(err))
   }
 
   const handleUpdateAvatar = (url) => {
-    api.updateUserAvatar(url).then(res => setCurrentUser(res))
-    closeAllPopups()
+    api.updateUserAvatar(url)
+      .then(res => {
+        setCurrentUser(res);
+        closeAllPopups()
+      })
+      .catch((err) => console.log(err))
+
   }
 
   const handleCardLike = (card) => {
@@ -73,20 +86,32 @@ export const App = () => {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
 
     // Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-    });
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) => state.map((c) => c._id === card._id ? newCard : c))
+      })
+      .catch((err) => console.log(err))
   }
 
   const handleAddPlaceSubmit = (card) => {
-    api.addItem(card).then(res => setCards([res, ...cards]))
+    api.addItem(card)
+      .then(res => {
+        setCards([res, ...cards])
+        closeAllPopups()
+      })
+      .catch((err) => console.log(err))
     card.name = ''
-    closeAllPopups()
+
   }
 
   const handleCardDelete = () => {
-    api.removeItem(itemToDelete._id).then(() => setCards(cards.filter((item) => item._id !== itemToDelete._id)))
-    closeAllPopups()
+    api.removeItem(itemToDelete._id)
+      .then(() => {
+        setCards(cards.filter((item) => item._id !== itemToDelete._id))
+        closeAllPopups()
+      })
+      .catch((err) => console.log(err))
+
   }
 
   const handlePopupSubmitOpen = (card) => {
